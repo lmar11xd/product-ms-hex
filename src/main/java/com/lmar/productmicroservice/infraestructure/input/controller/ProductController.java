@@ -2,10 +2,13 @@ package com.lmar.productmicroservice.infraestructure.input.controller;
 
 import com.lmar.productmicroservice.application.create.ProductCreateUseCase;
 import com.lmar.productmicroservice.application.find.ProductFindUseCase;
+import com.lmar.productmicroservice.domain.exception.ProductNotFoundException;
+import com.lmar.productmicroservice.infraestructure.exception.CustomException;
 import com.lmar.productmicroservice.infraestructure.input.dto.ProductDto;
 import com.lmar.productmicroservice.infraestructure.util.ConverterUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -29,8 +32,11 @@ public class ProductController {
 
     @GetMapping("{id}")
     @CircuitBreaker(name = "getProductByIdCB", fallbackMethod = "fallBackGetProductById")
-    public Mono<ProductDto> getProductById(@PathVariable String id) {
-        return productFindUseCase.findProductById(id).map(ConverterUtil::toDto);
+    public Mono<ResponseEntity<ProductDto>> getProductById(@PathVariable String id) {
+        return productFindUseCase.findProductById(id)
+                .map(ConverterUtil::toDto)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @PostMapping

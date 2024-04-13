@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 
 import static com.lmar.productmicroservice.infraestructure.util.ErrorCatalog.*;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class GlobalControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ProductNotFoundException.class)
-    public ErrorResponse handleStudentNotFoundException() {
+    public ErrorResponse handleProductNotFoundException() {
         return ErrorResponse.builder()
                 .code(PRODUCT_NOT_FOUND.getCode())
                 .message(PRODUCT_NOT_FOUND.getMessage())

@@ -19,8 +19,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
     @Override
     public Mono<ProductQuery> findById(String id) {
         return this.productMongoRepository.findById(id)
-                .map(ConverterUtil::toQuery)
-                .switchIfEmpty(Mono.error(ProductNotFoundException::new));
+                .map(ConverterUtil::toQuery);
     }
 
     @Override
