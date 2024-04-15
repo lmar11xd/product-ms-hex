@@ -2,13 +2,10 @@ package com.lmar.productmicroservice.infraestructure.input.controller;
 
 import com.lmar.productmicroservice.application.create.ProductCreateUseCase;
 import com.lmar.productmicroservice.application.find.ProductFindUseCase;
-import com.lmar.productmicroservice.domain.exception.ProductNotFoundException;
-import com.lmar.productmicroservice.infraestructure.exception.CustomException;
 import com.lmar.productmicroservice.infraestructure.input.dto.ProductDto;
 import com.lmar.productmicroservice.infraestructure.util.ConverterUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -48,7 +45,6 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
-    @CircuitBreaker(name = "updateProductCB", fallbackMethod = "fallBackUpdateProduct")
     public Mono<ProductDto> updateProduct(@PathVariable String id, @RequestBody Mono<ProductDto> productDto) {
         return productCreateUseCase
                 .updateProduct(id, productDto.map(ConverterUtil::toCommand))
@@ -70,10 +66,6 @@ public class ProductController {
     }
 
     public Mono<ProductDto> fallBackInsertProduct(Mono<ProductDto> productDto, Throwable throwable) {
-        return Mono.empty();
-    }
-
-    public Mono<ResponseEntity<ProductDto>> fallBackUpdateProduct(String id, Mono<ProductDto> productDto, Throwable throwable) {
         return Mono.empty();
     }
 

@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWe
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
@@ -17,9 +18,14 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
+@Order(-2)
 public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
 
-    public GlobalExceptionHandler(ErrorAttributes errorAttributes, WebProperties.Resources resources, ApplicationContext applicationContext, ServerCodecConfigurer codecConfigurer) {
+    public GlobalExceptionHandler(
+            ErrorAttributes errorAttributes,
+            WebProperties.Resources resources,
+            ApplicationContext applicationContext,
+            ServerCodecConfigurer codecConfigurer) {
         super(errorAttributes, resources, applicationContext);
         this.setMessageReaders(codecConfigurer.getReaders());
         this.setMessageWriters(codecConfigurer.getWriters());
@@ -35,4 +41,5 @@ public class GlobalExceptionHandler extends AbstractErrorWebExceptionHandler {
         HttpStatus status = (HttpStatus) Optional.ofNullable(errorMap.get("status")).orElse(HttpStatus.INTERNAL_SERVER_ERROR);
         return ServerResponse.status(status).contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromValue(errorMap));
     }
+
 }

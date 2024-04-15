@@ -8,4 +8,5 @@ import lombok.ToString;
 public class ProductCommand {
     private String description;
     private double price;
+    private int discount;
 }

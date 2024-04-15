@@ -1,0 +1,24 @@
+import com.lmar.productmicroservice.domain.model.ProductCommand;
+
+dialect "mvel"
+
+rule "Primer Descuento"
+    when productCommandDisc : ProductCommand(price >= 100)
+    then
+        System.out.println("==========Adding 15% discount =============");
+        productCommandDisc.setDiscount(15);
+end;
+
+rule "Segundo Descuento"
+    when productCommandDisc : ProductCommand(price >= 50 && price < 100)
+    then
+        System.out.println("==========Adding 10% discount =============");
+        productCommandDisc.setDiscount(10);
+end;
+
+rule "Tercer Descuento"
+    when productCommandDisc : ProductCommand(price < 50)
+    then
+        System.out.println("==========Adding 2% discount =============");
+        productCommandDisc.setDiscount(2);
+end;

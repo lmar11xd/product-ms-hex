@@ -11,4 +11,5 @@ public class AppConfig {
     public WebProperties.Resources resources() {
         return new WebProperties.Resources();
     }
+
 }
