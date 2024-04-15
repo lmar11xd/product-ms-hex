@@ -1,5 +1,13 @@
 # product-ms-hex
 ## Microservicio con Arquitectura Hexagonal y MongoDB
+Este microservicio lista, crea, actualiza, elimina productos.
+Luego de crear un Producto, en el cual ingresamos una descripcion y precio,
+se calculará un descuento (Drools) de acuerdo al precio.
+
+15% descuento -> precio mayor o igual a 100
+10% descuento -> precio entre 50 y 100
+2% descuento -> precio menor a 50
+
 ### Paso 1
 Clonar el repositorio y abrir el proyecto con Intellij IDEA
 
